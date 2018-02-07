@@ -5,7 +5,8 @@
   "angular-cli": {},
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start-backend": "node server.js",
+    "start": "ng build && node server.js",
     "test": "ng test",
     "pree2e": "webdriver-manager update --standalone false --gecko false",
     "e2e": "protractor"
@@ -20,7 +21,15 @@
     "@angular/platform-browser": "^2.3.1",
     "@angular/platform-browser-dynamic": "^2.3.1",
     "@angular/router": "^3.3.1",
+    "body-parser": "^1.18.2",
     "core-js": "^2.4.1",
+    "cors": "^2.8.4",
+    "errorhandler": "^1.5.0",
+    "express": "^4.16.2",
+    "express-session": "^1.15.6",
+    "methods": "^1.1.2",
+    "mongoose": "^5.0.3",
+    "passport": "^0.4.0",
     "rxjs": "^5.0.1",
     "ts-helpers": "^1.1.1",
     "zone.js": "^0.7.2"
@@ -42,5 +51,21 @@
     "ts-node": "1.2.1",
     "tslint": "^4.3.0",
     "typescript": "~2.0.3"
-  }
+  },
+  "description": "This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.0.0-beta.28.3.",
+  "main": "karma.conf.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marcellogoiaba/MovieReviewApp.git"
+  },
+  "keywords": [
+    "nodejs",
+    "angular5",
+    "mongodb"
+  ],
+  "author": "Marcelo Silva",
+  "bugs": {
+    "url": "https://github.com/marcellogoiaba/MovieReviewApp/issues"
+  },
+  "homepage": "https://github.com/marcellogoiaba/MovieReviewApp#readme"
 }
