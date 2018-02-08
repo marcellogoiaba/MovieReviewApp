@@ -1,45 +1,43 @@
-const express = require('express');
-const path = require('path');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const http = require('http');
-const fs = require('fs');
-const session = require('express-session');
-const passport = require('passport');
-const errorhandler = require('errorhandler');
-const methods = require('methods');
-const mongoose = require('mongoose');
+// modules =================================================
+let express        = require('express');
+let app            = express();
+let bodyParser     = require('body-parser');
+let methodOverride = require('method-override');
+let  mongoose      = require('mongoose');
 
-//get our API routes 
-const api = require('./server/routes/api');
+// set our port
+let port = process.env.PORT || 3000; 
 
-const app = express();
+// (uncomment after you enter in your own credentials in config/db.js)
+mongoose.connect('mongodb://localhost:27017/MovieApp')
+    .then(() => console.log("Successfully connected to MongoDB"))
+    .catch((err) => console.log("connections failed" , err));
 
-//middleware
-app.use(cors());
-//parsers for post data
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+// get all data/stuff of the body (POST) parameters
+// parse application/json 
+app.use(bodyParser.json()); 
 
-//point static to dist
-app.use(express.static(path.join(__dirname, 'dist')));
+// parse application/vnd.api+json as json
+app.use(bodyParser.json({ type: 'application/vnd.api+json' })); 
 
-//set our api routes
-app.use('/api', api);
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true })); 
 
-//set up our db api routes 
+// override with the X-HTTP-Method-Override header in the request. simulate DELETE/PUT
+app.use(methodOverride('X-HTTP-Method-Override')); 
 
-//catch all other routes and return the index file
-app.use('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'dist/index.html'));
-});
+// set the static files location /public/img will be /img for users
+app.use(express.static(__dirname + '/public')); 
 
-//set up port 
-const port = process.env.PORT || '3000';
-app.set('port', port);
+// routes ==================================================
+require('./server/routes/api')(app); // configure our routes
 
-//create http server
-const server = http.createServer(app);
+// start app ===============================================
+// startup our app at http://localhost:3000
+app.listen(port);               
 
-//listen to provided port on all netword interfaces
-server.listen(port, () => console.log(`API running on localhost:${port}`));
+// shoutout to the user                     
+console.log('Magic happens on port ' + port);
+
+// expose app           
+exports = module.exports = app;                         
